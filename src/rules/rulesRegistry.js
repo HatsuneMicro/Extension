@@ -4,8 +4,6 @@ import { storageService } from '../services/storageService.js';
 let _rules = new Map(DEFAULT_RULES.map(r => [r.id, r]));
 let _cachedResult = { exactPatterns: new Set(), otherRules: [] };
 
-const api = globalThis.browser || globalThis.chrome;
-
 function _updateCache() {
   const exact = new Set();
   const other = [];
@@ -27,16 +25,16 @@ function _updateCache() {
 }
 
 async function _syncToDNR(exactSet, otherRules, enabled) {
-  if (!api.declarativeNetRequest) return;
+  if (!browser.declarativeNetRequest) return;
 
   try {
-    const existingRules = await api.declarativeNetRequest.getDynamicRules();
+    const existingRules = await browser.declarativeNetRequest.getDynamicRules();
     const existingIds = existingRules.map(r => r.id);
 
 
     if (!enabled) {
       if (existingIds.length > 0) {
-        await api.declarativeNetRequest.updateDynamicRules({ removeRuleIds: existingIds });
+        await browser.declarativeNetRequest.updateDynamicRules({ removeRuleIds: existingIds });
       }
       return;
     }
@@ -65,7 +63,7 @@ async function _syncToDNR(exactSet, otherRules, enabled) {
       }
     };
 
-    await api.declarativeNetRequest.updateDynamicRules({
+    await browser.declarativeNetRequest.updateDynamicRules({
       removeRuleIds: existingIds,
       addRules: [rule]
     });
@@ -74,7 +72,7 @@ async function _syncToDNR(exactSet, otherRules, enabled) {
 
 _updateCache();
 
-api.storage.onChanged.addListener((changes, area) => {
+browser.storage.onChanged.addListener((changes, area) => {
   if (area === 'local' && changes[STORAGE_KEY]) {
     _updateCache();
   }
