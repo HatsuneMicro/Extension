@@ -31,13 +31,13 @@ export function clean(rawUrl) {
     if (searchPart) {
       const hashParams = new URLSearchParams(searchPart);
       const toRemoveFromHash = getParamsToRemove(hashParams, rules);
-      
+
       if (toRemoveFromHash.length > 0) {
         toRemoveFromHash.forEach(p => {
           hashParams.delete(p);
           removedParams.push(`hash:${p}`);
         });
-        
+
         const newHashSearch = hashParams.toString();
         const pathPart = hashParts[0];
         urlObj.hash = newHashSearch ? `${pathPart}?${newHashSearch}` : pathPart;

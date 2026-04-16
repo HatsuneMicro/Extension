@@ -1,28 +1,23 @@
-export function getParamsToRemove(searchParams, rules) {
-  const { exactPatterns, otherRules } = rules;
-  const toRemove = [];
+export function getParamsToRemove(urlParams, { exactPatterns, otherRules }) {
+  const toRemove = new Set();
 
-  for (const [key] of searchParams) {
+  for (const [key, _] of urlParams) {
     if (exactPatterns.has(key)) {
-      toRemove.push(key);
+      toRemove.add(key);
       continue;
     }
 
     for (const rule of otherRules) {
-      if (matches(key, rule)) {
-        toRemove.push(key);
+      if (rule.type === 'prefix' && key.startsWith(rule.pattern)) {
+        toRemove.add(key);
+        break;
+      }
+      if (rule.type === 'regex' && rule._compiled && rule._compiled.test(key)) {
+        toRemove.add(key);
         break;
       }
     }
   }
 
   return toRemove;
-}
-
-function matches(key, rule) {
-  switch (rule.type) {
-    case 'prefix': return key.startsWith(rule.pattern);
-    case 'regex':  return rule.pattern.test(key);
-    default:       return false;
-  }
 }
