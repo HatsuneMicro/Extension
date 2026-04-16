@@ -1,0 +1,17 @@
+# OS stuff
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDES
+.vscode/
+.idea/
+
+# Archives
+*.zip
+*.rar
+*.7z
+
+# Node (if used in future)
+node_modules/
+package-lock.json
