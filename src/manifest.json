@@ -3,7 +3,7 @@
   "name": "Hatsune Micro",
   "version": "1.0.0",
   "description": "Automatically strips tracking parameters from URLs.",
-  "permissions": ["storage", "webNavigation", "declarativeNetRequest"],
+  "permissions": ["storage", "webNavigation", "declarativeNetRequest", "tabs"],
   "host_permissions": ["<all_urls>"],
   "background": {
     "scripts": ["background.js"],

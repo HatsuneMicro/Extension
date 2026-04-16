@@ -26,7 +26,9 @@ export function clean(rawUrl) {
     const hashContent = urlObj.hash.startsWith('#') ? urlObj.hash.substring(1) : urlObj.hash;
 
     const hashParts = hashContent.split('?');
-    const searchPart = hashParts.length > 1 ? hashParts[1] : (hashContent.includes('=') ? hashContent : '');
+    const searchPart = hashParts.length > 1 
+      ? hashParts[1] 
+      : (hashContent.includes('=') && !hashContent.includes('/') ? hashContent : '');
 
     if (searchPart) {
       const hashParams = new URLSearchParams(searchPart);

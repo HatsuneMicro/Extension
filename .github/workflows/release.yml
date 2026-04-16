@@ -1,0 +1,50 @@
+name: Release & Publish Extension
+
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Lint
+        uses: mozilla/web-ext-action@v2
+        with:
+          command: lint
+          sourceDir: src
+
+  release:
+    needs: lint
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Patch version in manifest.json
+        run: |
+          VERSION=${GITHUB_REF_NAME#v}
+          jq --arg v "$VERSION" '.version = $v' src/manifest.json > tmp.json
+          mv tmp.json src/manifest.json
+
+      - name: Sign & publish to AMO
+        uses: mozilla/web-ext-action@v2
+        with:
+          command: sign
+          sourceDir: src
+          apiKey: ${{ secrets.AMO_JWT_ISSUER }}
+          apiSecret: ${{ secrets.AMO_JWT_SECRET }}
+          channel: listed
+
+      - name: Upload xpi to GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          XPI=$(find web-ext-artifacts -name '*.xpi' | head -1)
+          gh release create "$GITHUB_REF_NAME" "$XPI" \
+            --title "$GITHUB_REF_NAME" \
+            --generate-notes

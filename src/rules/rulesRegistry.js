@@ -21,7 +21,7 @@ function _updateCache() {
   _cachedResult = { exactPatterns: exact, otherRules: other };
 
   const enabled = storageService.get('enabled') ?? true;
-  _syncToDNR(exact, other, enabled);
+  _syncToDNR(exact, other, enabled).catch(() => {});
 }
 
 async function _syncToDNR(exactSet, otherRules, enabled) {
@@ -31,7 +31,6 @@ async function _syncToDNR(exactSet, otherRules, enabled) {
     const existingRules = await browser.declarativeNetRequest.getDynamicRules();
     const existingIds = existingRules.map(r => r.id);
 
-
     if (!enabled) {
       if (existingIds.length > 0) {
         await browser.declarativeNetRequest.updateDynamicRules({ removeRuleIds: existingIds });
@@ -39,14 +38,14 @@ async function _syncToDNR(exactSet, otherRules, enabled) {
       return;
     }
 
-    const paramsToStrip = [...exactSet];
+    const exactParams = [...exactSet];
+    const regexParams = [];
+
     otherRules.forEach(r => {
       if (r.type === 'prefix') {
-        if (r.pattern === 'utm_') {
-          paramsToStrip.push('utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content');
-        } else {
-          paramsToStrip.push(r.pattern);
-        }
+        regexParams.push(`^${r.pattern}.*`);
+      } else if (r.type === 'regex') {
+        regexParams.push(r.pattern);
       }
     });
 
@@ -55,7 +54,12 @@ async function _syncToDNR(exactSet, otherRules, enabled) {
       priority: 1,
       action: {
         type: 'redirect',
-        redirect: { transform: { removeQueryParameters: paramsToStrip } }
+        redirect: {
+          transform: {
+            removeQueryParameters: exactParams,
+            removeQueryParametersMatching: regexParams
+          }
+        }
       },
       condition: {
         urlFilter: '*',
