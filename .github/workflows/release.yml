@@ -12,10 +12,11 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Lint
-        uses: mozilla/web-ext-action@v2
+        uses: kewisch/action-web-ext@v1
         with:
-          command: lint
-          sourceDir: src
+          cmd: lint
+          source: src
+          channel: listed
 
   release:
     needs: lint
@@ -31,11 +32,18 @@ jobs:
           jq --arg v "$VERSION" '.version = $v' src/manifest.json > tmp.json
           mv tmp.json src/manifest.json
 
-      - name: Sign & publish to AMO
-        uses: mozilla/web-ext-action@v2
+      - name: Build
+        id: web-ext-build
+        uses: kewisch/action-web-ext@v1
         with:
-          command: sign
-          sourceDir: src
+          cmd: build
+          source: src
+
+      - name: Sign & publish to AMO
+        uses: kewisch/action-web-ext@v1
+        with:
+          cmd: sign
+          source: src
           apiKey: ${{ secrets.AMO_JWT_ISSUER }}
           apiSecret: ${{ secrets.AMO_JWT_SECRET }}
           channel: listed
