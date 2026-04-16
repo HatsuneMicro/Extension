@@ -16,6 +16,10 @@ function handleNavigation({ tabId, url, frameId }) {
 }
 
 export function registerNavigationListener() {
-  browser.webNavigation.onBeforeNavigate.addListener(handleNavigation);
-  browser.webNavigation.onHistoryStateUpdated.addListener(handleNavigation);
+  const filter = {
+    url: [{ schemes: ['http', 'https'] }]
+  };
+
+  browser.webNavigation.onBeforeNavigate.addListener(handleNavigation, filter);
+  browser.webNavigation.onHistoryStateUpdated.addListener(handleNavigation, filter);
 }

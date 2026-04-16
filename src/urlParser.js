@@ -18,5 +18,5 @@ export function removeParams(urlObj, paramNames) {
 }
 
 export function serialize(urlObj) {
-  return urlObj.toString();
+  return urlObj.href;
 }
