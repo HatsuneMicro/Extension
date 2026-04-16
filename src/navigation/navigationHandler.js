@@ -1,6 +1,5 @@
 import { clean } from '../core/hatsuneMicro.js';
 import { redirect } from './redirectController.js';
-import { statsTracker } from '../services/statsTracker.js';
 import { storageService } from '../services/storageService.js';
 
 function handleNavigation({ tabId, url, frameId }) {
@@ -10,9 +9,7 @@ function handleNavigation({ tabId, url, frameId }) {
   const result = clean(url);
   if (!result.changed) return;
 
-  console.log(`[Hatsune Micro] Cleaning: ${url} -> ${result.cleanUrl}`);
   redirect(tabId, result.cleanUrl);
-  statsTracker.increment();
 }
 
 export function registerNavigationListener() {

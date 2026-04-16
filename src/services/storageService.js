@@ -6,7 +6,7 @@ export const storageService = {
   async load() {
     if (_cache) return _cache;
     const data = await browser.storage.local.get(STORAGE_KEY);
-    _cache = data[STORAGE_KEY] ?? { enabled: true, stats: { cleaned: 0 }, userRules: [] };
+    _cache = data[STORAGE_KEY] ?? { enabled: true, userRules: [] };
     return _cache;
   },
 
