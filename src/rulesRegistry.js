@@ -1,15 +1,30 @@
 import { DEFAULT_RULES } from './shared/constants.js';
 
 let _rules = new Map(DEFAULT_RULES.map(r => [r.id, r]));
-let _sortedCache = null;
+let _cachedResult = { exactPatterns: new Set(), otherRules: [] };
 
 function _updateCache() {
-  _sortedCache = [..._rules.values()].sort((a, b) => b.priority - a.priority);
+  const exact = new Set();
+  const other = [];
+
+  for (const rule of _rules.values()) {
+    if (rule.type === 'exact') {
+      exact.add(rule.pattern);
+    } else {
+      other.push(rule);
+    }
+  }
+
+  // Sort other rules by priority for consistent matching
+  other.sort((a, b) => b.priority - a.priority);
+
+  _cachedResult = { exactPatterns: exact, otherRules: other };
 }
+
 _updateCache();
 
 export const rulesRegistry = {
-  getAll: () => _sortedCache,
+  getAll: () => _cachedResult,
   add: (rule) => {
     _rules.set(rule.id, rule);
     _updateCache();
@@ -18,7 +33,7 @@ export const rulesRegistry = {
     _rules.delete(id);
     _updateCache();
   },
-  reset: () => {
+  reset:  () => {
     _rules = new Map(DEFAULT_RULES.map(r => [r.id, r]));
     _updateCache();
   },

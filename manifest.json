@@ -11,7 +11,7 @@
   },
   "browser_specific_settings": {
     "gecko": {
-      "id": "hatsune-micro@example.com"
+      "id": "addon@HatsuneMicro"
     }
   },
   "action": {
