@@ -10,5 +10,5 @@ A browser extension that automatically strips tracking parameters from URLs to e
 ## Installation
 Currently in development. To install locally:
 1. Clone the repository.
-2. Open `about:debugging` (Firefox).
+2. Open `about:debugging`.
 3. Load the extension as an unpacked directory.
