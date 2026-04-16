@@ -1,7 +1,7 @@
-import { clean } from './hatsuneMicro.js';
+import { clean } from '../core/hatsuneMicro.js';
 import { redirect } from './redirectController.js';
-import { statsTracker } from './statsTracker.js';
-import { storageService } from './storageService.js';
+import { statsTracker } from '../services/statsTracker.js';
+import { storageService } from '../services/storageService.js';
 
 function handleNavigation({ tabId, url, frameId }) {
   if (frameId !== 0) return;

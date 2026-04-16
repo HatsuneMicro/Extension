@@ -1,9 +1,8 @@
 import { parse, removeParams, serialize } from './urlParser.js';
-import { rulesRegistry } from './rulesRegistry.js';
-import { getParamsToRemove } from './rulesEngine.js';
+import { rulesRegistry } from '../rules/rulesRegistry.js';
+import { getParamsToRemove } from '../rules/rulesEngine.js';
 
 export function clean(rawUrl) {
-  // Fast Fail: if no query and no hash, nothing to clean
   if (!rawUrl.includes('?') && !rawUrl.includes('#')) {
     return { changed: false, originalUrl: rawUrl, cleanUrl: rawUrl, removedParams: [] };
   }
@@ -28,7 +27,7 @@ export function clean(rawUrl) {
 
     const hashParts = hashContent.split('?');
     const searchPart = hashParts.length > 1 ? hashParts[1] : (hashContent.includes('=') ? hashContent : '');
-    
+
     if (searchPart) {
       const hashParams = new URLSearchParams(searchPart);
       const toRemoveFromHash = getParamsToRemove(hashParams, rules);

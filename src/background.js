@@ -1,6 +1,6 @@
-import { storageService } from './src/storageService.js';
-import { rulesRegistry } from './src/rulesRegistry.js';
-import { registerNavigationListener } from './src/navigationHandler.js';
+import { storageService } from './services/storageService.js';
+import { rulesRegistry } from './rules/rulesRegistry.js';
+import { registerNavigationListener } from './navigation/navigationHandler.js';
 
 async function init() {
   await storageService.load();

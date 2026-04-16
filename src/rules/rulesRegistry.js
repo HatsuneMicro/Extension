@@ -1,4 +1,4 @@
-import { DEFAULT_RULES } from './shared/constants.js';
+import { DEFAULT_RULES } from '../shared/constants.js';
 
 let _rules = new Map(DEFAULT_RULES.map(r => [r.id, r]));
 let _cachedResult = { exactPatterns: new Set(), otherRules: [] };
@@ -15,7 +15,6 @@ function _updateCache() {
     }
   }
 
-  // Sort other rules by priority for consistent matching
   other.sort((a, b) => b.priority - a.priority);
 
   _cachedResult = { exactPatterns: exact, otherRules: other };
