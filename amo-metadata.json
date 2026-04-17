@@ -1,0 +1,11 @@
+{
+  "categories": {
+    "firefox": ["privacy-security"]
+  },
+  "summary": {
+    "en-US": "Automatically strips tracking parameters (utm_*, fbclid, gclid, etc.) from URLs."
+  },
+  "version": {
+    "license": "GPL-3.0-only"
+  }
+}

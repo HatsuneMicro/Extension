@@ -41,23 +41,22 @@ jobs:
           filename: "{name}-{version}.xpi"
 
       - name: Sign & publish to AMO
-        env:
-          AMO_JWT_ISSUER: ${{ secrets.AMO_JWT_ISSUER }}
-          AMO_JWT_SECRET: ${{ secrets.AMO_JWT_SECRET }}
-        run: |
-          echo '{ "version": { "license": "GPL-3.0-only" } }' > amo-metadata.json
-          npx web-ext sign \
-            --source-dir src \
-            --api-key $AMO_JWT_ISSUER \
-            --api-secret $AMO_JWT_SECRET \
-            --channel listed \
-            --amo-metadata amo-metadata.json
+        id: web-ext-sign
+        uses: kewisch/action-web-ext@v1
+        with:
+          cmd: sign
+          source: ${{ steps.web-ext-build.outputs.target }}
+          channel: listed
+          apiKey: ${{ secrets.AMO_JWT_ISSUER }}
+          apiSecret: ${{ secrets.AMO_JWT_SECRET }}
+          metaDataFile: amo-metadata.json
 
       - name: Create GitHub Release and attach xpi
         env:
           GH_TOKEN: ${{ github.token }}
+          XPI_PATH: ${{ steps.web-ext-build.outputs.target }}
         run: |
           gh release create "$GITHUB_REF_NAME" \
-            "${{ steps.web-ext-build.outputs.target }}" \
+            "$XPI_PATH" \
             --title "$GITHUB_REF_NAME" \
             --generate-notes
