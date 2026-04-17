@@ -1,0 +1,27 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'src/**'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'src/**'
+  workflow_dispatch:
+
+jobs:
+  lint:
+    name: Lint Extension
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run web-ext lint
+        uses: kewisch/action-web-ext@v1
+        with:
+          cmd: lint
+          source: src
+          channel: listed
