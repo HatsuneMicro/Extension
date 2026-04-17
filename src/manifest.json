@@ -3,6 +3,8 @@
   "name": "Hatsune Micro",
   "version": "1.0.0",
   "description": "Automatically strips tracking parameters from URLs.",
+  "author": "Kleshzz <vasyapulopapik@gmail.com>",
+  "homepage_url": "https://github.com/HatsuneMicro/Extension",
   "permissions": ["storage", "webNavigation", "declarativeNetRequest", "tabs"],
   "host_permissions": ["<all_urls>"],
   "background": {
@@ -11,7 +13,8 @@
   },
   "browser_specific_settings": {
     "gecko": {
-      "id": "addon@HatsuneMicro"
+      "id": "addon@HatsuneMicro",
+      "strict_min_version": "113.0"
     }
   },
   "action": {

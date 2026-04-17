@@ -43,6 +43,7 @@ jobs:
       - name: Sign & publish to AMO
         id: web-ext-sign
         uses: kewisch/action-web-ext@v1
+        continue-on-error: true
         with:
           cmd: sign
           source: ${{ steps.web-ext-build.outputs.target }}
