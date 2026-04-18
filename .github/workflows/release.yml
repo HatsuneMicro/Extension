@@ -9,7 +9,7 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Lint
         uses: kewisch/action-web-ext@v1
@@ -24,7 +24,9 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
 
       - name: Patch version in manifest.json
         run: |

@@ -17,8 +17,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
-
+        uses: actions/checkout@v6
+        with:
+          sparse-checkout: |
+            src
+          sparse-checkout-cone-mode: false
+          
       - name: Run web-ext lint
         uses: kewisch/action-web-ext@v1
         with:
