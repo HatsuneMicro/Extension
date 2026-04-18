@@ -2,13 +2,18 @@ import { STORAGE_KEY } from '../shared/constants.js';
 
 let _cache = null;
 let _writeTimer = null;
+let _loadPromise = null;
 
 export const storageService = {
-  async load() {
-    if (_cache) return _cache;
-    const data = await browser.storage.local.get(STORAGE_KEY);
-    _cache = data[STORAGE_KEY] ?? { enabled: true, userRules: [] };
-    return _cache;
+  load() {
+    if (_cache) return Promise.resolve(_cache);
+    if (!_loadPromise) {
+      _loadPromise = browser.storage.local.get(STORAGE_KEY).then(data => {
+        _cache = data[STORAGE_KEY] ?? { enabled: true, userRules: [] };
+        return _cache;
+      });
+    }
+    return _loadPromise;
   },
 
   get(key) {
