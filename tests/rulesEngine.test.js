@@ -59,6 +59,15 @@ describe('getParamsToRemove — regex', () => {
         const rules = makeRules({ regex: ['^utm_'] });
         expect(getParamsToRemove(params, rules).has('UTM_SOURCE')).toBe(true);
     });
+
+    it('does not crash if _compiled is null', () => {
+        const params = new URLSearchParams('foo=1');
+        const rules = {
+            exactPatterns: new Set(),
+            otherRules: [{ type: 'regex', pattern: '^foo', priority: 10, _compiled: null }],
+        };
+        expect(getParamsToRemove(params, rules).size).toBe(0);
+    });
 });
 
 describe('getParamsToRemove — empty cases', () => {

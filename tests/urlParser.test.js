@@ -42,6 +42,13 @@ describe('removeParams', () => {
         const removed = removeParams(url, []);
         expect(removed).toEqual([]);
     });
+
+    it('accepts Set as well as array', () => {
+        const url = parse('https://example.com/?a=1&b=2&c=3');
+        const removed = removeParams(url, new Set(['a', 'c']));
+        expect(removed).toEqual(expect.arrayContaining(['a', 'c']));
+        expect(url.searchParams.has('b')).toBe(true);
+    });
 });
 
 describe('serialize', () => {

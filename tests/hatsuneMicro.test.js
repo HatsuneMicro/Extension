@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 
 vi.mock('../src/rules/rulesRegistry.js', () => ({
     rulesRegistry: {
@@ -11,7 +11,7 @@ vi.mock('../src/rules/rulesRegistry.js', () => ({
     },
 }));
 
-const { clean } = await import('../src/core/hatsuneMicro.js');
+import { clean } from '../src/core/hatsuneMicro.js';
 
 describe('clean — no changes', () => {
     it('returns changed:false if there are no ? and #', () => {
@@ -28,6 +28,12 @@ describe('clean — no changes', () => {
     it('returns changed:false for an invalid URL', () => {
         const result = clean('not-a-url?utm_source=x');
         expect(result.changed).toBe(false);
+    });
+
+    it('cleanUrl equals originalUrl when nothing is removed', () => {
+        const url = 'https://example.com/?foo=1';
+        const result = clean(url);
+        expect(result.cleanUrl).toBe(result.originalUrl);
     });
 });
 
