@@ -58,8 +58,23 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           XPI_PATH: ${{ steps.web-ext-build.outputs.target }}
+          SIGNED_XPI_PATH: ${{ steps.web-ext-sign.outputs.target }}
         run: |
+          cp "$XPI_PATH" "Hatsune.xpi"
+          ASSETS=("Hatsune.xpi")
+          
+          if [[ -n "$SIGNED_XPI_PATH" && -f "$SIGNED_XPI_PATH" ]]; then
+            cp "$SIGNED_XPI_PATH" "Hatsune.signed.xpi"
+            ASSETS+=("Hatsune.signed.xpi")
+          else
+            SIGNED_FALLBACK=$(find web-ext-artifacts -maxdepth 1 -name "*.xpi" ! -name "$(basename "$XPI_PATH")" 2>/dev/null | head -n 1 || true)
+            if [[ -n "$SIGNED_FALLBACK" && -f "$SIGNED_FALLBACK" ]]; then
+              cp "$SIGNED_FALLBACK" "Hatsune.signed.xpi"
+              ASSETS+=("Hatsune.signed.xpi")
+            fi
+          fi
+          
           gh release create "$GITHUB_REF_NAME" \
-            "$XPI_PATH" \
+            "${ASSETS[@]}" \
             --title "$GITHUB_REF_NAME" \
             --generate-notes
