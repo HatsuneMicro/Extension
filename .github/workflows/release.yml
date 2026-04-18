@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@v6
 
       - name: Cache web-ext npm cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/.npm
           key: web-ext-${{ runner.os }}-8.4.0
@@ -38,7 +38,7 @@ jobs:
           persist-credentials: false
 
       - name: Cache web-ext npm cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/.npm
           key: web-ext-${{ runner.os }}-8.4.0
@@ -70,7 +70,7 @@ jobs:
           channel: listed
           apiKey: ${{ secrets.AMO_JWT_ISSUER }}
           apiSecret: ${{ secrets.AMO_JWT_SECRET }}
-          metaDataFile: amo-metadata.json
+          metaDataFile: .github/amo-metadata.json
 
       - name: Create GitHub Release and attach xpi
         env:
