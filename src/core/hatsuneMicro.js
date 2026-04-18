@@ -17,7 +17,7 @@ export function clean(rawUrl) {
 
   if (urlObj.search !== '') {
     const toRemove = getParamsToRemove(urlObj.searchParams, rules);
-    if (toRemove.length > 0) {
+    if (toRemove.size > 0) {
       removedParams = removedParams.concat(removeParams(urlObj, toRemove));
     }
   }
@@ -26,15 +26,15 @@ export function clean(rawUrl) {
     const hashContent = urlObj.hash.startsWith('#') ? urlObj.hash.substring(1) : urlObj.hash;
 
     const hashParts = hashContent.split('?');
-    const searchPart = hashParts.length > 1 
-      ? hashParts[1] 
+    const searchPart = hashParts.length > 1
+      ? hashParts[1]
       : (hashContent.includes('=') && !hashContent.includes('/') ? hashContent : '');
 
     if (searchPart) {
       const hashParams = new URLSearchParams(searchPart);
       const toRemoveFromHash = getParamsToRemove(hashParams, rules);
 
-      if (toRemoveFromHash.length > 0) {
+      if (toRemoveFromHash.size > 0) {
         toRemoveFromHash.forEach(p => {
           hashParams.delete(p);
           removedParams.push(`hash:${p}`);
