@@ -28,3 +28,10 @@ dist/
 build/
 tmp/
 temp/
+
+# Other
+*.zip
+*.rar
+*.7z
+*.tar
+
