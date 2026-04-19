@@ -1,14 +1,23 @@
 {
   "manifest_version": 3,
   "name": "Hatsune Micro",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Automatically strips tracking parameters from URLs.",
   "author": "Kleshzz <vasyapulopapik@gmail.com>",
   "homepage_url": "https://github.com/HatsuneMicro/Extension",
-  "permissions": ["storage", "webNavigation", "declarativeNetRequest", "tabs"],
-  "host_permissions": ["<all_urls>"],
+  "permissions": [
+    "storage",
+    "webNavigation",
+    "declarativeNetRequest",
+    "tabs"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
   "background": {
-    "scripts": ["background.js"],
+    "scripts": [
+      "background.js"
+    ],
     "type": "module"
   },
   "browser_specific_settings": {
