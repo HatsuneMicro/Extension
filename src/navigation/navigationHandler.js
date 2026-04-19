@@ -15,19 +15,30 @@ setInterval(() => {
   }
 }, 60000);
 
-function handleNavigation({ tabId, url, frameId }) {
+async function handleNavigation({ tabId, url, frameId }) {
   if (frameId !== 0) return;
 
   const now = Date.now();
+
+  if (_recentlyProcessed.size > 500) {
+    _recentlyProcessed.clear();
+  }
+
   if (_recentlyProcessed.has(url) && (now - _recentlyProcessed.get(url)) < RECENT_TTL) {
     return;
   }
   _recentlyProcessed.set(url, now);
 
+  await storageService.load();
   if (!storageService.get('enabled')) return;
 
   const result = clean(url);
   if (!result.changed) return;
+
+  // DNR handles query parameters at the network level. 
+  // We only use webNavigation for hash-based parameters which DNR cannot see.
+  const hasHashChanges = result.removedParams.some(p => p.startsWith('hash:'));
+  if (!hasHashChanges) return;
 
   redirect(tabId, result.cleanUrl);
 }

@@ -3,6 +3,7 @@ import { storageService } from '../services/storageService.js';
 
 let _rules = new Map(DEFAULT_RULES.map(r => [r.id, r]));
 let _cachedResult = { exactPatterns: new Set(), otherRules: [] };
+let _lastDnrState = '';
 
 function _updateCache() {
   const exact = new Set();
@@ -21,7 +22,18 @@ function _updateCache() {
   _cachedResult = { exactPatterns: exact, otherRules: other };
 
   const enabled = storageService.get('enabled') ?? true;
-  _syncToDNR(exact, other, enabled).catch(() => {});
+  
+  // Only sync to DNR if rules or enabled state actually changed
+  const dnrState = JSON.stringify({
+    exact: [...exact].sort(),
+    other: other.map(r => ({ p: r.pattern, t: r.type, pr: r.priority })),
+    enabled
+  });
+
+  if (dnrState !== _lastDnrState) {
+    _lastDnrState = dnrState;
+    _syncToDNR(exact, other, enabled).catch(() => {});
+  }
 }
 
 async function _syncToDNR(exactSet, otherRules, enabled) {

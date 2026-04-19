@@ -25,10 +25,20 @@ export const storageService = {
     _cache[key] = value;
     clearTimeout(_writeTimer);
     _writeTimer = setTimeout(() => {
+      _writeTimer = null;
       browser.storage.local.set({ [STORAGE_KEY]: _cache });
     }, 500);
   },
 };
+
+if (typeof window !== 'undefined') {
+  window.addEventListener('beforeunload', () => {
+    if (_writeTimer) {
+      clearTimeout(_writeTimer);
+      browser.storage.local.set({ [STORAGE_KEY]: _cache });
+    }
+  });
+}
 
 browser.storage.onChanged.addListener((changes, area) => {
   if (area === 'local' && changes[STORAGE_KEY]) {
