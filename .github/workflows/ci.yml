@@ -6,11 +6,19 @@ on:
     paths:
       - 'src/**'
       - 'tests/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'vitest.config.js'
+      - '.github/workflows/**'
   pull_request:
     branches: [ main ]
     paths:
       - 'src/**'
       - 'tests/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'vitest.config.js'
+      - '.github/workflows/**'
   workflow_dispatch:
 
 jobs:
