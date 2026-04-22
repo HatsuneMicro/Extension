@@ -1,21 +1,37 @@
-# OS files
+# OS Files
 .DS_Store
+.DS_Store?
+._*
 Thumbs.db
 desktop.ini
+*.stackdump
 
-# IDEs
-.vscode/
+# IDEs and Editors
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/launch.json
 .idea/
 *.swp
 *.swo
 
 # Node.js
 node_modules/
+dist/
+build/
+.npm/
+.cache/
+*.log
 npm-debug.log*
 yarn-debug.log*
-.eslintcache
+pnpm-debug.log*
 
-# Extension artifacts
+# Environment and Secrets
+.env
+.env.*
+!.env.example
+
+# Browser Extension specific
 web-ext-artifacts/
 *.xpi
 *.crx
@@ -23,15 +39,14 @@ web-ext-artifacts/
 .web-extension-id
 .amo-upload-uuid
 
-# Build and temporary
-dist/
-build/
-tmp/
-temp/
+# Testing
+coverage/
+.nyc_output/
+.vitest-cache/
 
-# Other
+# Archives
 *.zip
 *.rar
 *.7z
 *.tar
-
+*.gz
