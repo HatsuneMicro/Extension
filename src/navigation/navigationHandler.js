@@ -1,6 +1,17 @@
 import { clean } from '../core/hatsuneMicro.js';
 import { redirect } from './redirectController.js';
-import { storageService } from '../services/storageService.js';
+
+let _enabled = true;
+
+browser.storage.onChanged.addListener((changes, area) => {
+  if (area === 'local' && changes['hatsune_micro_state']) {
+    _enabled = changes['hatsune_micro_state'].newValue?.enabled ?? true;
+  }
+});
+
+export function initEnabled(value) {
+  _enabled = value ?? true;
+}
 
 const _recentlyProcessed = new Map();
 const RECENT_TTL = 200;
@@ -29,8 +40,7 @@ async function handleNavigation({ tabId, url, frameId }) {
   }
   _recentlyProcessed.set(url, now);
 
-  await storageService.load();
-  if (!storageService.get('enabled')) return;
+  if (!_enabled) return;
 
   const result = clean(url);
   if (!result.changed) return;

@@ -35,7 +35,7 @@ npm install
 ### Running Tests
 We use [Vitest](https://vitest.dev/) for unit testing our core logic and rules engine.
 ```bash
-npm test          # Run tests once
+npm test           # Run tests once
 npm run test:watch # Run tests in watch mode
 ```
 
