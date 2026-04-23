@@ -33,22 +33,8 @@ jobs:
             src
           sparse-checkout-cone-mode: false
 
-      - name: Cache web-ext npm cache
-        uses: actions/cache@v5
-        with:
-          path: ~/.npm
-          key: web-ext-${{ runner.os }}-8.4.0
-          restore-keys: web-ext-${{ runner.os }}-
-
-      - name: Install web-ext
-        run: npm install -g web-ext@8.4.0
-
       - name: Run web-ext lint
-        uses: kewisch/action-web-ext@v2
-        with:
-          cmd: lint
-          source: src
-          channel: listed
+        run: npx web-ext@8.4.0 lint --source-dir src --channel listed
 
   test:
     name: Test

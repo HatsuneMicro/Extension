@@ -6,20 +6,7 @@ on:
       - 'v*'
 
 jobs:
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-
-      - name: Lint
-        uses: kewisch/action-web-ext@v2
-        with:
-          cmd: lint
-          source: src
-          channel: listed
-
   release:
-    needs: lint
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -49,7 +36,7 @@ jobs:
           
           if ! git diff --cached --quiet; then
             git commit -m "chore: bump version to $VERSION"
-            git push origin HEAD:main
+            git push origin HEAD:refs/heads/main
           else
             echo "No version changes to commit."
           fi

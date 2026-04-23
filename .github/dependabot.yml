@@ -10,11 +10,12 @@ updates:
       - "npm"
     versioning-strategy: increase
     groups:
-      npm-minor-patch:
+      npm-all:
         applies-to: version-updates
         patterns:
           - "*"
         update-types:
+          - "major"
           - "minor"
           - "patch"
     commit-message:
