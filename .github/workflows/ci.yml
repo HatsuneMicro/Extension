@@ -34,7 +34,7 @@ jobs:
           sparse-checkout-cone-mode: false
 
       - name: Run web-ext lint
-        run: npx web-ext@8.4.0 lint --source-dir src --channel listed
+        run: npx web-ext@8.4.0 lint --source-dir src
 
   test:
     name: Test
