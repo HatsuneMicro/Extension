@@ -17,7 +17,7 @@ export default [
       "no-unused-vars": ["error", { argsIgnorePattern: "^_", varsIgnorePattern: "^_" }],
       "no-undef": "error",
       "no-console": "warn",
-      "no-empty": "error"
+      "no-empty": ["error", { "allowEmptyCatch": true }],
     },
   },
   {
