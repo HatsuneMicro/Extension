@@ -10,7 +10,7 @@ export default [
       sourceType: "module",
       globals: {
         ...globals.webextensions,
-        ...globals.browsers,
+        ...globals.browser,
       },
     },
     rules: {
