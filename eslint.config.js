@@ -9,14 +9,19 @@ export default [
       ecmaVersion: 2022,
       sourceType: "module",
       globals: {
-        ...globals.browser,
-        browser: "readonly",
+        ...globals.webextensions,
       },
     },
     rules: {
       "no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
       "no-undef": "error",
       "no-console": "warn",
+    },
+  },
+  {
+    files: ["src/background.js"],
+    rules: {
+      "no-console": "off",
     },
   },
   {
