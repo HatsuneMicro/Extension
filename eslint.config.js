@@ -10,12 +10,14 @@ export default [
       sourceType: "module",
       globals: {
         ...globals.webextensions,
+        ...globals.browsers,
       },
     },
     rules: {
-      "no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
+      "no-unused-vars": ["error", { argsIgnorePattern: "^_", varsIgnorePattern: "^_" }],
       "no-undef": "error",
       "no-console": "warn",
+      "no-empty": "error"
     },
   },
   {
