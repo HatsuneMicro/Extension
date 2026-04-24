@@ -83,7 +83,7 @@ async function _syncToDNR(exactSet, otherRules, enabled) {
       removeRuleIds: existingIds,
       addRules: [rule]
     });
-  } catch (e) { }
+  } catch { }
 }
 
 _updateCache();
